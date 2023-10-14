@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
@@ -8,7 +8,14 @@ from mentee.models import Mentee
 # Create your views here.
 def login(request):
     if request.method == 'GET':
-        return render(request, 'users/login.html')
+        if request.user.is_authenticated:
+            if Mentor.objects.filter(user=request.user).exists:
+                role = "mentor"
+            else:
+                role = "mentee"
+            return render(request, 'index.html', {"role": role})
+        else:
+            return render(request, 'users/login.html')
     email = request.POST.get('email')
     password = request.POST.get('password')
     user = User.objects.filter(email=email).first()
@@ -45,4 +52,8 @@ def signup(request):
         Mentee(user=user).save()
     elif mentor:
         Mentor(user=user).save()
-    return HttpResponse("Success")
+    return redirect('login')
+ 
+def signout(request):
+    auth.logout(request)
+    return redirect('login')
