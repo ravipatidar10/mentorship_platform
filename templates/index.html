@@ -13,8 +13,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
         crossorigin="anonymous"></script>
-    {% block title %}
-    {% endblock %}
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
 </head>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
@@ -260,7 +262,7 @@
                     <span class="nav_logo-name">Mentorship Platfrom</span>
                 </a>
                 <div class="nav_list">
-                    <a href="#" class="nav_link active">
+                    <a href="{% if role == 'mentee' %} {% url 'login' %} {% else %} {% url 'mentor_dashboard' %} {% endif %}" class="nav_link active">
                         <i class='bx bx-grid-alt nav_icon'></i>
                         <span class="nav_name">Dashboard</span>
                     </a>
@@ -307,11 +309,11 @@
     </div>
     <!--Container Main start-->
     <div class="height-100 bg-light">
-        <h4>Main Components</h4>
+        <!-- <h4>Main Components</h4> -->
+        {% block content %}
+        {% endblock %}
     </div>
     <!--Container Main end-->
-    {% block content %}
-    {% endblock %}
 </body>
 
 </html>

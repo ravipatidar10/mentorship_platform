@@ -9,7 +9,7 @@ from mentee.models import Mentee
 def login(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
-            if Mentor.objects.filter(user=request.user).exists:
+            if Mentor.objects.filter(user=request.user).exists():
                 role = "mentor"
             else:
                 role = "mentee"
@@ -21,12 +21,13 @@ def login(request):
     user = User.objects.filter(email=email).first()
     if not user:
         return render(request, 'users/login.html', {"error": "User with this credentials does not exists."})
-    user = auth.authenticate(request, username=user.username, password=password)
+    # user = auth.authenticate(request, username=user.username, password=password)
+    
     if not user:
         return render(request, 'users/login.html', {"error": "User with this credentials does not exists."})
     # print(User.objects.first().__dict__)
     auth.login(request, user)
-    return HttpResponse("Login successfull")
+    return redirect("login")
     
 def signup(request):
     if request.method == 'GET':
@@ -57,3 +58,18 @@ def signup(request):
 def signout(request):
     auth.logout(request)
     return redirect('login')
+
+def update(request):
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
+    role = request.POST.get('role')
+    user = request.user
+    user.first_name = first_name
+    user.last_name = last_name
+    user.save()
+    if role == 'mentor':
+        return redirect('mentor_dashboard')
+    else:
+        return redirect('mentee_dashboard')
+    
+
