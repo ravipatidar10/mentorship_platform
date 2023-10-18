@@ -11,9 +11,10 @@ def login(request):
         if request.user.is_authenticated:
             if Mentor.objects.filter(user=request.user).exists():
                 role = "mentor"
+                return redirect('mentor_dashboard')
             else:
                 role = "mentee"
-            return render(request, 'index.html', {"role": role})
+                return redirect('mentee_dashboard')
         else:
             return render(request, 'users/login.html')
     email = request.POST.get('email')
