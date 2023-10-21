@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
 from mentor.models import Mentor
 from mentee.models import Mentee
 
@@ -55,11 +57,13 @@ def signup(request):
     elif mentor:
         Mentor(user=user).save()
     return redirect('login')
- 
+
+@login_required(login_url='/')
 def signout(request):
     auth.logout(request)
     return redirect('login')
 
+@login_required(login_url='/')
 def update(request):
     first_name = request.POST.get('first_name')
     last_name = request.POST.get('last_name')

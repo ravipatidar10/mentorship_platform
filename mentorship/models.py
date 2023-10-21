@@ -7,11 +7,13 @@ from mentor.models import Mentor, ResearchDetails
 PENDING = 1
 ACCEPTED = 2
 REJECTED = 3
+CANCELLED = 4
 
 MENTORSHIP_STATUSES = (
     (PENDING, "pending"),
     (ACCEPTED, "accepted"),
     (REJECTED, "rejected"),
+    (CANCELLED, "cancelled"),
 )
 
 COMPLETED = 1

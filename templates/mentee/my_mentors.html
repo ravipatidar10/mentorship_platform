@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+
+{% block title %} Pending Request {% endblock %}
+
+{% block content %}
+<div>
+    <legend>Mentors</legend>
+    {% if mentorships %}
+    {% for mentorship in mentorships %}
+    <div class="row" style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding-top:2px">
+        <div class="col-12 col-md-4 text-center" style="margin: auto;">
+            {% if mentorship.mentor.first_name %}
+            {{mentorship.mentor.user.first_name}} {{mentorship.mentor.user.last_name}}
+            {% else %}
+            {{ mentorship.mentor.user.username }}
+            {% endif %}
+        </div>
+        <div class="col-12 col-md-8 text-center" style="margin: auto;">
+            <p style="text-decoration: solid;">{{ mentorship.research.research.research_area }}</p>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>No Mentors....</p>
+    {% endif %}
+    {% endblock %}
+</div>

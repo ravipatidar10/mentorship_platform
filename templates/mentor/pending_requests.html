@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+
+{% block title %} Pending Request {% endblock %}
+
+{% block content %}
+<div>
+    <legend>Pending Requests</legend>
+    {% if pending_requests %}
+    {% for request in pending_requests %}
+    <div class="row" style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding-top:2px">
+        <div class="col-12 col-md-2 text-center" style="margin: auto;">
+            {% if request.mentee.first_name %}
+            {{request.mentee.user.first_name}} {{request.mentee.user.last_name}}
+            {% else %}
+            {{ request.mentee.user.username }}
+            {% endif %}
+        </div>
+        <div class="col-12 col-md-8">
+            <p style="text-decoration: solid;">{{ request.research.research.research_area }}</p>
+            <p>{{ request.research.details }}</p>
+        </div>
+        <div class="col-12 col-md-2 text-center" style="margin:auto;">
+            <div class="row">
+                <div class="col-6 col-md-12">
+                    <form action="{% url 'accept_request' %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="request_id" id="" hidden value="{{request.id}}" />
+                        <button type="submit" class="btn btn-primary">Accept</button>
+                    </form>
+                </div>
+                <div class="col-6 col-md-12">
+                    <form action="{% url 'cancel_request' %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" name="request_id" id="" hidden value="{{request.id}}" />
+                        <button type="submit" class="btn btn-danger">Reject</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>No Pending Request...</p>
+    {% endif %}
+    {% endblock %}
+</div>

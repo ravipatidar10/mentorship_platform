@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 from mentor.models import Research
 from mentorship.models import Mentorship
 from mentor.models import Mentor, ResearchDetails
 
 
+@login_required(login_url='/')
 def dashboard(request):
     return render(
         request,
@@ -15,7 +17,7 @@ def dashboard(request):
         }
     )
 
-
+@login_required(login_url='/')
 def find_mentor(request):
     research_areas = Research.objects.all()
     exclude_researches = Mentorship.objects.filter(
@@ -30,6 +32,8 @@ def find_mentor(request):
             Q(mentor__user__username=username) | Q(
                 mentor__user__first_name=username) | Q(mentor__user__last_name=username)
         )
+    else:
+        username = ""
     return render(
         request,
         'mentee/find_mentor.html',

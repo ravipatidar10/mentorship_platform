@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 
-{% block title %} Dashboard {% endblock %}
+{% block title %} Find Mentor {% endblock %}
 
 {% block content %}
 <div>
@@ -54,7 +54,7 @@
             <p>{{ research.details }}</p>
         </div>
         <div class="col-12 col-md-2 text-center" style="margin:auto;">
-            <form action="" method="post">
+            <form action="{% url 'request_mentorship' %}" method="post">
                 {% csrf_token %}
                 <input type="text" name="research_detail_id" id="" hidden value="{{research.id}}"/>
                 <button type="submit" class="btn btn-primary">Request</button>
