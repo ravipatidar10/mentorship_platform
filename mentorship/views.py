@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Mentorship, ACCEPTED, PENDING, REJECTED
+from .models import Mentorship, ACCEPTED, PENDING, REJECTED, MENTORSHIP_STATUSES
 from mentor.models import ResearchDetails
 
 @login_required(login_url='/')
@@ -84,3 +84,30 @@ def get_mentors(request):
             'mentorships': mentorships
         }
     )
+
+@login_required(login_url='/')
+def get_mentorships(request):
+    role = request.GET.get('role')
+    status = request.GET.get('status', ACCEPTED)
+    if role == 'mentee':
+        mentorships = Mentorship.objects.filter(mentee=request.user.mentee, status=status)
+    else:
+        mentorships = Mentorship.objects.filter(mentor=request.user.mentor, status=status)
+    statuses = []
+    for i in MENTORSHIP_STATUSES:
+        if int(i[0]) == int(status):
+            statuses.append({'key': i[0], 'val': i[1], 'selected': True})
+        else:
+            statuses.append({'key': i[0], 'val': i[1], 'selected': False})
+
+    return render(
+        request,
+        role+'/mentorships.html',
+        {
+            'role': 'mentor',
+            'mentorships': mentorships,
+            'status': status,
+            'statuses': statuses,
+        }
+    )
+    

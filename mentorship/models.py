@@ -8,12 +8,14 @@ PENDING = 1
 ACCEPTED = 2
 REJECTED = 3
 CANCELLED = 4
+WITHDRAW = 5
 
 MENTORSHIP_STATUSES = (
     (PENDING, "pending"),
     (ACCEPTED, "accepted"),
     (REJECTED, "rejected"),
     (CANCELLED, "cancelled"),
+    (WITHDRAW, "withdraw")
 )
 
 COMPLETED = 1

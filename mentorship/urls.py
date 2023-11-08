@@ -5,7 +5,8 @@ from .views import (
     cancel_request,
     accept_request,
     get_mentees,
-    get_mentors
+    get_mentors,
+    get_mentorships,
 )
 
 urlpatterns = [
@@ -15,4 +16,6 @@ urlpatterns = [
     path('accept_request/', accept_request, name="accept_request"),
     path('get_mentees/', get_mentees, name="get_mentees"),
     path('get_mentors/', get_mentors, name="get_mentors"),
+    path('get_mentorships/', get_mentorships, name="get_mentorships"),
+    
 ]
