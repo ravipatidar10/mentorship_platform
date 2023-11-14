@@ -8,7 +8,7 @@
     <form method="get" action="{% url 'get_mentorships' %}">
         <fieldset>
             <div class="form-group">
-                <input type="text" name="role" value="mentee" hidden>
+                <input type="text" name="role" value="{{role}}" hidden>
             </div>
             <label for="status">Status</label>
             <select id="status" class="form-control" name="status">
@@ -38,11 +38,14 @@
             <p>{{ mentorship.research.details }}</p>
         </div>
         <div class="col-12 col-md-2 text-center" style="margin:auto;">
-            <form action="{% url 'request_mentorship' %}" method="post">
-                {% csrf_token %}
-                <input type="text" name="research_detail_id" id="" hidden value="{{research.id}}"/>
-                <button type="submit" class="btn btn-warning">Withdraw</button>
-            </form>
+                <!-- <input type="text" name="research_detail_id" id="" hidden value="{{research.id}}"/> -->
+                <!-- <input type="text" name="status" id="change_status" hidden/> -->
+                {% if role == 'mentee' %}
+                <a href="{% url 'change_mentorship_status' %}?status=5&mentorship_id={{mentorship.id}}" class="btn btn-danger"><i class="bx bx-x nav_icon"></i></a>
+                {% else %}
+                <a href="{% url 'change_mentorship_status' %}?status=4&mentorship_id={{mentorship.id}}" class="btn btn-danger"><i class="bx bx-x nav_icon"></i></a>
+                <a href="{% url 'change_mentorship_status' %}?status=6&mentorship_id={{mentorship.id}}" class="btn btn-primary"><i class="bx bx-check nav_icon"></i></a>
+                {% endif %}
         </div>
     </div>
     {% endfor %}

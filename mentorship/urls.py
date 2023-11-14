@@ -7,6 +7,8 @@ from .views import (
     get_mentees,
     get_mentors,
     get_mentorships,
+    get_tasks,
+    change_mentorship_status,
 )
 
 urlpatterns = [
@@ -17,5 +19,6 @@ urlpatterns = [
     path('get_mentees/', get_mentees, name="get_mentees"),
     path('get_mentors/', get_mentors, name="get_mentors"),
     path('get_mentorships/', get_mentorships, name="get_mentorships"),
-    
+    path('change_mentorship_status/', change_mentorship_status, name="change_mentorship_status"),
+    path('get_tasks/', get_tasks, name="get_tasks"),
 ]

@@ -1,7 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Mentorship, ACCEPTED, PENDING, REJECTED, MENTORSHIP_STATUSES
+from .models import (
+    Mentorship, 
+    Meeting,
+    Tasks,
+    ACCEPTED, 
+    PENDING, 
+    REJECTED, 
+    MENTORSHIP_STATUSES
+)
 from mentor.models import ResearchDetails
 
 @login_required(login_url='/')
@@ -102,7 +110,7 @@ def get_mentorships(request):
 
     return render(
         request,
-        role+'/mentorships.html',
+        'mentorship/mentorships.html',
         {
             'role': 'mentor',
             'mentorships': mentorships,
@@ -111,3 +119,22 @@ def get_mentorships(request):
         }
     )
     
+@login_required(login_url='/')
+def get_tasks(request):
+    mentorship_id = request.GET.get('mentorship_id')
+    role = request.GET.get('role')
+    meetings = Meeting.objects.filter(mentorship_id=mentorship_id)
+    tasks = Tasks.objects.filter(mentorship_id=mentorship_id)
+    return render(
+        request,
+        ''
+    )
+
+@login_required(login_url='/')
+def change_mentorship_status(request):
+    mentorship_id = request.GET.get('mentorship_id')
+    status = request.GET.get('status')
+    mentorship = Mentorship.objects.get(id=mentorship_id)
+    mentorship.status = status
+    mentorship.save()
+    return redirect('get_mentorships')
