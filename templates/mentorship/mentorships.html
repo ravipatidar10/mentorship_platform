@@ -25,7 +25,7 @@
     {% for mentorship in mentorships %}
     <div class="row" style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding-top:2px">
         <div class="col-12 col-md-2 text-center" style="margin: auto;">
-            <a href="#">
+            <a href="{% url 'get_tasks' %}?mentorship_id={{mentorship.id}}&role={{role}}">
                 {% if mentorship.mentor.first_name %}
                 {{mentorship.mentor.user.first_name}} {{mentorship.mentor.user.last_name}} 
                 {% else %}

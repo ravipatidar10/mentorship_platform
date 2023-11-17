@@ -23,11 +23,13 @@ MENTORSHIP_STATUSES = (
 COMPLETED = 1
 NOT_STARTED = 2
 RUNNING = 3
+CANCELLED = 4
 
 TASK_STATUSES = (
     (COMPLETED, "completed"),
     (NOT_STARTED, "not_started"),
-    (RUNNING, "running")
+    (RUNNING, "running"),
+    (CANCELLED, "cancelled"),
 )
 
 class Mentorship(models.Model):
@@ -38,6 +40,7 @@ class Mentorship(models.Model):
 
 
 class Tasks(models.Model):
+    title = models.CharField(max_length=250)
     mentorship = models.ForeignKey(Mentorship, on_delete=models.CASCADE)
     detail = models.TextField()
     start_time = models.DateTimeField()

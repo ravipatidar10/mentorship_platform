@@ -9,6 +9,8 @@ from .views import (
     get_mentorships,
     get_tasks,
     change_mentorship_status,
+    change_task_status,
+    create_task,
 )
 
 urlpatterns = [
@@ -21,4 +23,6 @@ urlpatterns = [
     path('get_mentorships/', get_mentorships, name="get_mentorships"),
     path('change_mentorship_status/', change_mentorship_status, name="change_mentorship_status"),
     path('get_tasks/', get_tasks, name="get_tasks"),
+    path('change_task_status/', change_task_status, name="change_task_status"),
+    path('create_task/', create_task, name="create_task"),
 ]
