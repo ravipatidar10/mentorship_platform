@@ -14,6 +14,8 @@ from .views import (
     change_mentorship_status,
     change_task_status,
     create_task,
+    cancel_meeting,
+    create_meeting,
 )
 
 urlpatterns = [
@@ -28,4 +30,6 @@ urlpatterns = [
     path('get_tasks/', get_tasks, name="get_tasks"),
     path('change_task_status/', change_task_status, name="change_task_status"),
     path('create_task/', create_task, name="create_task"),
+    path('cancel_meeting/', cancel_meeting, name="cancel_meeting"),
+    path('create_meeting/', create_meeting, name="create_meeting"),
 ]

@@ -6,23 +6,6 @@
 
 <div>
     <legend>Tasks</legend>
-    <form method="get" action="{% url 'get_tasks' %}">
-        <fieldset>
-            <div class="form-group">
-                <input type="text" name="role" value="{{role}}" hidden>
-                <input type="text" name="mentorship_id" value="{{mentorship_id}}" hidden>
-            </div>
-            <label for="status">Status</label>
-            <select id="status" class="form-control" name="status">
-                <option value="" selected>--Select--</option>
-                {% for s in task_statuses %}
-                <option value="{{s.key}}" {% if s.selected %} selected {% endif %}>{{s.val}}</option>
-                {% endfor %}
-            </select>
-            <br>
-            <button type="submit" class="btn btn-primary">Search</button>
-        </fieldset>
-    </form>
     {% if role == "mentor" %}
     <form method="post" action="{% url 'create_task' %}">
         {% csrf_token %}
@@ -52,7 +35,25 @@
         </fieldset>
     </form>
     {% endif %}
+    <form method="get" action="{% url 'get_tasks' %}">
+        <fieldset>
+            <div class="form-group">
+                <input type="text" name="role" value="{{role}}" hidden>
+                <input type="text" name="mentorship_id" value="{{mentorship_id}}" hidden>
+            </div>
+            <label for="status">Task Statuses</label>
+            <select id="status" class="form-control" name="status">
+                <option value="" selected>--Select--</option>
+                {% for s in task_statuses %}
+                <option value="{{s.key}}" {% if s.selected %} selected {% endif %}>{{s.val}}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </fieldset>
+    </form>
     <br><br>
+    Tasks
     {% for task in tasks %}
     <div class="row" style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding-top:2px">
         <div class="col-12 col-md-2 text-center" style="margin: auto;">
@@ -62,7 +63,7 @@
             <p style="text-decoration: solid;">{{ task.detail }}</p>
             From: {{task.start_time}} - To: {{task.end_time}}
         </div>
-        <div class="col-12 col-md-1">
+        <div class="col-12 col-md-1" style="margin: auto;">
              {{task.task_status|title}}
         </div>
         <div class="col-12 col-md-2 text-center" style="margin:auto;">
@@ -70,15 +71,15 @@
                 <!-- <input type="text" name="status" id="change_status" hidden/> -->
                 {% if role == 'mentor' %}
                     {% if task.status != 1 %}
-                        <a href="{% url 'change_task_status' %}?status=1&task_id={{task.id}}&role={{role}}" class="btn btn-primary"><i class="bx bx-check"></i></a>
-                        <a href="{% url 'change_task_status' %}?status=4&task_id={{task.id}}&role={{role}}" class="btn btn-danger"><i class="bx bx-x"></i></a>
+                        <a href="{% url 'change_task_status' %}?status=1&task_id={{task.id}}&role={{role}}" class="btn btn-primary" title="Complete"><i class="bx bx-check"></i></a>
+                        <a href="{% url 'change_task_status' %}?status=4&task_id={{task.id}}&role={{role}}" class="btn btn-danger" title="Cancel"><i class="bx bx-x"></i></a>
                     {% else %}
-                        <button class="btn btn-primary" disabled><i class="bx bx-check"></i></a>
+                        <button class="btn btn-primary" disabled><i class="bx bx-check" ></i></a>
                         <button class="btn btn-danger" disabled><i class="bx bx-x"></i></a>
                     {% endif %}
                 {% else %}
                     {% if task.status == 2 %}
-                        <a href="{% url 'change_task_status' %}?status=3&task_id={{task.id}}&role={{role}}" class="btn btn-info"><i class="bx bx-caret-right-circle"></i></a>
+                        <a href="{% url 'change_task_status' %}?status=3&task_id={{task.id}}&role={{role}}" class="btn btn-info" title="Start"><i class="bx bx-caret-right-circle"></i></a>
                     {% else %}
                         <button class="btn btn-info" disabled><i class="bx bx-caret-right-circle"></i></button>
                     {% endif %}
@@ -90,5 +91,57 @@
     <br><br>
     <p>No tasks to show...</p>
     {% endif %}
+</div>
+<br><br>
+<div>
+    <legend>Meetings</legend>
+    <form method="post" action="{% url 'create_meeting' %}">
+        {% csrf_token %}
+        <fieldset>
+            <div class="form-group">
+                <input type="text" name="role" value="{{role}}" hidden>
+                <input type="text" name="mentorship_id" value="{{mentorship_id}}" hidden>
+            </div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input name="title" class="form-control" id="title" placeholder="title"/>
+            </div>
+            <div class="form-group">
+                <label for="link">Meeting Link</label>
+                <input name="link" class="form-control" id="link" placeholder="meeting link"/>
+            </div>
+            <div class="form-group">
+                <label for="scheduled_date">Scheduled Date</label><br>
+                <input type="datetime-local" id="scheduled_date" name="scheduled_date" style="width: 100%;">
+            </div>
+            <button type="submit" class="btn btn-info">Create</button>
+        </fieldset>
+    </form>
+    <br>
+    Upcoming meetings
+    {% for meet in meetings %}
+    <div class="row" style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding-top:2px">
+        <div class="col-12 col-md-2 text-center" style="margin: auto;">
+            {{meet.title}}
+        </div>
+        <div class="col-12 col-md-8">
+            <a href="{{ meet.link }}" target="_blank" rel="noopener noreferrer">{{ meet.link }}</a>
+            <br>
+            Scheduled at: {% if meet.is_cancelled %} <small class="text-small" style="color: red;">CANCELLED</small> {% else %}{{meet.time}} {% endif %}
+        </div>
+        <div class="col-12 col-md-2 text-center" style="margin:auto;">
+            {% if meet.is_cancelled %}
+            <button class="btn btn-danger" disabled><i class="bx bx-x"></i></button>
+            {% else %}
+            <a href="{% url 'cancel_meeting' %}?meet_id={{meet.id}}&role={{role}}" class="btn btn-danger" title="Cancel"><i class="bx bx-x"></i></a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% if not meetings %}
+    <br><br>
+    <p>No upcoming meetings...</p>
+    {% endif %}
+    <br>
 </div>
 {% endblock %}

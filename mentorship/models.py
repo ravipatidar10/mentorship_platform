@@ -59,5 +59,7 @@ class Tasks(models.Model):
 
 class Meeting(models.Model):
     mentorship = models.ForeignKey(Mentorship, on_delete=models.CASCADE)
+    title = models.CharField(max_length=250)
+    is_cancelled = models.BooleanField(default=False)
     link = models.URLField()
     time = models.DateTimeField()

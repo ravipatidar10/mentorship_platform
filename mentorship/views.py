@@ -1,5 +1,5 @@
 # Python Imports
-from datetime import datetime
+from datetime import datetime, timedeltas
 
 # 3rd Party Imports
 from django.shortcuts import render, redirect
@@ -182,7 +182,7 @@ def get_tasks(request):
     mentorship_id = request.GET.get('mentorship_id')
     role = request.GET.get('role')
     task_status = request.GET.get("status")
-    meetings = Meeting.objects.filter(mentorship_id=mentorship_id)
+    meetings = Meeting.objects.filter(mentorship_id=mentorship_id, time__gte=datetime.now()-timedelta(hours=1))
     # if int(task_status) == 2:
     #     tasks = Tasks.objects.filter(mentorship_id=mentorship_id, start_time__gte=datetime.now())
     # elif int(task_status) == 3:
@@ -206,7 +206,7 @@ def get_tasks(request):
         {
             'role': role,
             'tasks': tasks,
-            'meeting': meetings,
+            'meetings': meetings,
             'task_statuses': statuses,
             'mentorship_id': mentorship_id,
         }
@@ -275,5 +275,32 @@ def create_task(request):
         end_time=end_date
     )
     task.save()
+    url = reverse('get_tasks')
+    return redirect( f'{url}?role={role}&mentorship_id={mentorship_id}')
+
+@login_required(login_url='/')
+def cancel_meeting(request):
+    meet_id = request.GET.get('meet_id')
+    role = request.GET.get('role')
+    meet = Meeting.objects.get(id=meet_id)
+    meet.is_cancelled = True
+    meet.save()
+    url = reverse('get_tasks')
+    return redirect( f'{url}?role={role}&mentorship_id={meet.mentorship_id}')
+
+@login_required(login_url='/')
+def create_meeting(request):
+    role = request.POST.get('role')
+    title = request.POST.get('title')
+    link = request.POST.get('link')
+    scheduled_date = request.POST.get('scheduled_date')
+    mentorship_id = request.POST.get('mentorship_id')
+    meeting = Meeting(
+        title=title, 
+        link=link, 
+        mentorship_id=mentorship_id,
+        time=scheduled_date,
+    )
+    meeting.save()
     url = reverse('get_tasks')
     return redirect( f'{url}?role={role}&mentorship_id={mentorship_id}')
