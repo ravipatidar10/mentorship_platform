@@ -26,7 +26,7 @@ def login(request):
     user = User.objects.filter(email=email).first()
     if not user:
         return render(request, 'users/login.html', {"error": "User with this credentials does not exists."})
-    # user = auth.authenticate(request, username=user.username, password=password)
+    user = auth.authenticate(request, username=user.username, password=password)
     
     if not user:
         return render(request, 'users/login.html', {"error": "User with this credentials does not exists."})
