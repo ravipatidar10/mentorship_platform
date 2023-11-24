@@ -151,6 +151,12 @@ def get_mentorships(request):
         mentorships = Mentorship.objects.filter(mentee=request.user.mentee, status=status)
     else:
         mentorships = Mentorship.objects.filter(mentor=request.user.mentor, status=status)
+    for mentorship in mentorships:
+        tasks = Tasks.objects.filter(mentorship=mentorship, status=RUNNING)[:2]
+        now = datetime.now()
+        meetings = Meeting.objects.filter(mentorship=mentorship, is_cancelled=False, time__gte=now)[:2]
+        mentorship.tasks = tasks
+        mentorship.meetings = meetings
     statuses = []
     for i in MENTORSHIP_STATUSES:
         if int(i[0]) == int(status):

@@ -34,8 +34,31 @@
             </a>
         </div>
         <div class="col-12 col-md-8">
-            <p style="text-decoration: solid;">{{ mentorship.research.research.research_area }}</p>
-            <p>{{ mentorship.research.details }}</p>
+            Running Tasks:
+            {% if mentorship.tasks %}
+            <ul>
+                {% for task in mentorship.tasks %}
+                <li>{{task.title}} (Deadline: {{task.end_time}})</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>
+                No running  tasks
+            </p>
+            {% endif %}
+            Upcoming Meeting:
+            {% if mentorship.meetings %}
+                <ul>
+                    {% for meeting in mentorship.meetings %}
+                    <li>{{meeting.title}} (<a href="{{meeting.link}}">{{meeting.link}}</a>)</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+            <p>
+                No upcoming meetings
+            </p>
+            {% endif %}
+
         </div>
         <div class="col-12 col-md-2 text-center" style="margin:auto;">
                 <!-- <input type="text" name="research_detail_id" id="" hidden value="{{research.id}}"/> -->
