@@ -286,6 +286,13 @@ def create_task(request):
 
 @login_required(login_url='/')
 def cancel_meeting(request):
+    """
+    Cancel meeting
+    Method type:GET
+    Parameters:
+        role
+        meet_id
+    """
     meet_id = request.GET.get('meet_id')
     role = request.GET.get('role')
     meet = Meeting.objects.get(id=meet_id)
@@ -296,6 +303,16 @@ def cancel_meeting(request):
 
 @login_required(login_url='/')
 def create_meeting(request):
+    """
+    Create a new meeting
+    Method type:POST
+    Parameters:
+        role
+        title
+        link
+        scheduled_date
+        mentorship_id
+    """ 
     role = request.POST.get('role')
     title = request.POST.get('title')
     link = request.POST.get('link')
