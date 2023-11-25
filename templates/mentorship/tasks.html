@@ -5,6 +5,11 @@
 {% block content %}
 
 <div>
+    <legend>Research Details</legend>
+    Research Area:
+    <p>{{mentorship.research.research.research_area}}</p>
+    Details:
+    <p>{{mentorship.research.details}}</p>
     <legend>Tasks</legend>
     {% if role == "mentor" %}
     <form method="post" action="{% url 'create_task' %}">
@@ -12,7 +17,7 @@
         <fieldset>
             <div class="form-group">
                 <input type="text" name="role" value="{{role}}" hidden>
-                <input type="text" name="mentorship_id" value="{{mentorship_id}}" hidden>
+                <input type="text" name="mentorship_id" value="{{mentorship.id}}" hidden>
             </div>
             <div class="form-group">
                 <label for="title">Title</label>
@@ -39,7 +44,7 @@
         <fieldset>
             <div class="form-group">
                 <input type="text" name="role" value="{{role}}" hidden>
-                <input type="text" name="mentorship_id" value="{{mentorship_id}}" hidden>
+                <input type="text" name="mentorship_id" value="{{mentorship.id}}" hidden>
             </div>
             <label for="status">Task Statuses</label>
             <select id="status" class="form-control" name="status">
@@ -100,7 +105,7 @@
         <fieldset>
             <div class="form-group">
                 <input type="text" name="role" value="{{role}}" hidden>
-                <input type="text" name="mentorship_id" value="{{mentorship_id}}" hidden>
+                <input type="text" name="mentorship_id" value="{{mentorship.id}}" hidden>
             </div>
             <div class="form-group">
                 <label for="title">Title</label>

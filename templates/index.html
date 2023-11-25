@@ -298,7 +298,8 @@
                     </a>
                     {% endif %}
                     {% url 'get_mentorships' as path_view %}
-                    <a href="{% url 'get_mentorships' %}?role={{role}}" class="nav_link {% if request.path == path_view %} active {% endif %}">
+                    {% url 'get_tasks' as task_view %}
+                    <a href="{% url 'get_mentorships' %}?role={{role}}" class="nav_link {% if request.path == path_view or request.path == task_view %} active {% endif %}">
                         <i class='bx bx-message-square-detail nav_icon'></i>
                         <span class="nav_name">Mentorships</span>
                     </a>

@@ -159,6 +159,8 @@ def get_mentorships(request):
         mentorship.meetings = meetings
     statuses = []
     for i in MENTORSHIP_STATUSES:
+        if i[0] not in [2, 6]:
+            continue
         if int(i[0]) == int(status):
             statuses.append({'key': i[0], 'val': i[1], 'selected': True})
         else:
@@ -188,14 +190,15 @@ def get_tasks(request):
     mentorship_id = request.GET.get('mentorship_id')
     role = request.GET.get('role')
     task_status = request.GET.get("status")
-    meetings = Meeting.objects.filter(mentorship_id=mentorship_id, time__gte=datetime.now()-timedelta(hours=1))
+    mentorship = Mentorship.objects.get(id=mentorship_id)
+    meetings = Meeting.objects.filter(mentorship=mentorship, time__gte=datetime.now()-timedelta(hours=1))
     # if int(task_status) == 2:
     #     tasks = Tasks.objects.filter(mentorship_id=mentorship_id, start_time__gte=datetime.now())
     # elif int(task_status) == 3:
     #     tasks = Tasks.objects.filter(mentorship_id=mentorship_id, start_time__lte=datetime.now(), start_time__gte=datetime.now())
     # else:
     whens = [When(status=k, then=Value(v.replace("_", " "))) for k, v in TASK_STATUSES]
-    tasks = Tasks.objects.filter(mentorship_id=mentorship_id).annotate(task_status=Case(*whens, output_field=CharField()))
+    tasks = Tasks.objects.filter(mentorship=mentorship).annotate(task_status=Case(*whens, output_field=CharField()))
     if task_status:
         tasks = tasks.filter(status=task_status)
 
@@ -214,7 +217,7 @@ def get_tasks(request):
             'tasks': tasks,
             'meetings': meetings,
             'task_statuses': statuses,
-            'mentorship_id': mentorship_id,
+            'mentorship': mentorship,
         }
     )
 
