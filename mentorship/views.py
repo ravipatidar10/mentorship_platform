@@ -1,5 +1,5 @@
 # Python Imports
-from datetime import datetime, timedeltas
+from datetime import datetime, timedelta
 
 # 3rd Party Imports
 from django.shortcuts import render, redirect
