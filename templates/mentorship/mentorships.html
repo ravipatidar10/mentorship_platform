@@ -25,6 +25,7 @@
     {% for mentorship in mentorships %}
     <div class="row" style="border-top: 1px solid gray; border-bottom: 1px solid gray; padding-top:2px">
         <div class="col-12 col-md-2 text-center" style="margin: auto;">
+            {% if role == "mentee" %}
             <p>
                 {% if mentorship.mentor.first_name %}
                 {{mentorship.mentor.user.first_name}} {{mentorship.mentor.user.last_name}} 
@@ -32,6 +33,15 @@
                 {{ mentorship.mentor.user.username }}
                 {% endif %}
             </p>
+            {% else %}
+            <p>
+                {% if mentorship.mentee.first_name %}
+                {{mentorship.mentee.user.first_name}} {{mentorship.mentee.user.last_name}} 
+                {% else %}
+                {{ mentorship.mentee.user.username }}
+                {% endif %}
+            </p>
+            {% endif %}
             <a href="{% url 'get_tasks' %}?mentorship_id={{mentorship.id}}&role={{role}}">
                 {{mentorship.research.research.research_area}}
             </a>
