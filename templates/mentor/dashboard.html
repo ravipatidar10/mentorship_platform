@@ -70,7 +70,7 @@
 
             <div class="form-group">
                 <label for="research_area">Research Area</label>
-                <select id="research_area" class="form-control" name="research_area" disabled>
+                <select class="form-control" name="research_area" disabled>
                     <option disabled>--Select--</option>
                     {% for res in research_areas %}
                     <option value="{{ res.id }}" {% if res.id == research.research.id %} selected {% endif %}>{{ res.research_area }}</option>
@@ -147,7 +147,8 @@
 <script>
     $("#other").hide()
     $(".research_form").hide()
-    $("#research_area").on("change", (e) => {
+    $("#research_area").change((e) => {
+        console.log("Tetsts****")
         var research_area= $("#research_area").val()
         if(research_area == "other"){
             $("#other").show()
