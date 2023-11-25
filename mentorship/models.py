@@ -41,6 +41,9 @@ class Mentorship(models.Model):
     status = models.IntegerField(choices=MENTORSHIP_STATUSES, default=PENDING)
     research = models.ForeignKey(ResearchDetails, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.mentor.user.username + "-" + self.mentee.user.username
+
 
 class Tasks(models.Model):
     title = models.CharField(max_length=250)
@@ -49,6 +52,9 @@ class Tasks(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     status = models.IntegerField(choices=TASK_STATUSES, default=NOT_STARTED)
+
+    def __str__(self):
+        return self.detail
 
 
 class Meeting(models.Model):
