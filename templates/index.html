@@ -263,32 +263,47 @@
                     <span class="nav_logo-name">Mentorship Platfrom</span>
                 </a>
                 <div class="nav_list">
-                    <a href="{% if role == 'mentee' %} {% url 'login' %} {% else %} {% url 'mentor_dashboard' %} {% endif %}" class="nav_link active">
+                    {% if role == 'mentee' %}
+                    {% url 'mentee_dashboard' as path_view %}
+                    <a href="{{path_view}}" class="nav_link {% if request.path == path_view %} active {% endif %}">
                         <i class='bx bx-grid-alt nav_icon'></i>
                         <span class="nav_name">Dashboard</span>
                     </a>
+                    {% else %}
+                    {% url 'mentor_dashboard' as path_view %}
+                    <a href=" {% url 'mentor_dashboard' %}" class="nav_link {% if request.path == path_view %} active {% endif %}">
+                        <i class='bx bx-grid-alt nav_icon'></i>
+                        <span class="nav_name">Dashboard</span>
+                    </a>
+                    {% endif %}
+
                     {% if role == "mentee" %}
-                    <a href="{% url 'get_mentors' %}" class="nav_link">
+                    {% url 'get_mentors' as path_view %}
+                    <a href="{% url 'get_mentors' %}" class="nav_link {% if request.path == path_view %} active {% endif %}">
                         <i class='bx bx-user nav_icon'></i>
                         <span class="nav_name">My Mentors</span>
                     </a>
                     {% else %}
-                    <a href="{% url 'get_mentees' %}" class="nav_link">
+                    {% url 'get_mentees' as path_view %}
+                    <a href="{% url 'get_mentees' %}" class="nav_link {% if request.path == path_view %} active {% endif %}">
                         <i class='bx bx-user nav_icon'></i>
                         <span class="nav_name">My Mentees</span>
                     </a>
                     {% endif %}
                     {% if role == "mentee" %}
-                    <a href="{% url 'find_mentor' %}" class="nav_link">
+                    {% url 'find_mentor' as path_view %}
+                    <a href="{% url 'find_mentor' %}" class="nav_link {% if request.path == path_view %} active {% endif %}">
                         <i class='bx bx-search nav_icon'></i>
                         <span class="nav_name">Find Mentor</span>
                     </a>
                     {% endif %}
-                    <a href="{% url 'get_mentorships' %}?role={{role}}" class="nav_link">
+                    {% url 'get_mentorships' as path_view %}
+                    <a href="{% url 'get_mentorships' %}?role={{role}}" class="nav_link {% if request.path == path_view %} active {% endif %}">
                         <i class='bx bx-message-square-detail nav_icon'></i>
                         <span class="nav_name">Mentorships</span>
                     </a>
-                    <a href="{% url 'pending_requests' %}" class="nav_link">
+                    {% url 'pending_requests' as path_view %}
+                    <a href="{% url 'pending_requests' %}" class="nav_link {% if request.path == path_view %} active {% endif %}">
                         <i class='bx bx-bookmark nav_icon'></i>
                         <span class="nav_name">Pending Requests</span>
                     </a>
