@@ -1,7 +1,9 @@
+# 3rd Party Imports
 from django.shortcuts import render
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 
+# Local Imports
 from mentor.models import Research
 from mentorship.models import Mentorship
 from mentor.models import Mentor, ResearchDetails
@@ -9,6 +11,10 @@ from mentor.models import Mentor, ResearchDetails
 
 @login_required(login_url='/')
 def dashboard(request):
+    """
+     render the mentee dashboard page
+     Method type=GET
+    """
     return render(
         request,
         'mentee/dashboard.html',
@@ -19,6 +25,13 @@ def dashboard(request):
 
 @login_required(login_url='/')
 def find_mentor(request):
+    """
+     search for mentors based on research areas or usernames
+     Method type=GET
+     Parameters:
+        research_id
+        username 
+    """
     research_areas = Research.objects.all()
     exclude_researches = Mentorship.objects.filter(
         mentee__user=request.user).values_list("research__id", flat=True)

@@ -1,4 +1,7 @@
+# 3rd Party Import
 from django.db import models
+
+# Local Import
 from mentee.models import Mentee
 from mentor.models import Mentor, ResearchDetails
 

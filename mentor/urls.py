@@ -1,4 +1,7 @@
+# 3rd Party Import
 from django.urls import path
+
+# Local Import
 from .views import dashboard, delete_research_area, update_research_area, add_research_area
 
 urlpatterns = [

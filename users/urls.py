@@ -1,4 +1,7 @@
+# 3rd Party Imports
 from django.urls import path
+
+# Local Import
 from .views import login, signup, signout, update
 
 urlpatterns = [

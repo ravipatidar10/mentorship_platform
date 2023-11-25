@@ -1,9 +1,11 @@
+# 3rd Party Import
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
+# Local Import
 from mentor.models import Mentor
 from mentee.models import Mentee
 
@@ -33,6 +35,16 @@ def login(request):
     return redirect("login")
     
 def signup(request):
+    """
+    User Registration
+    Method type:GET/POST
+    Parameters:
+        email
+        password
+        username
+        mentee
+        mentor
+    """
     if request.method == 'GET':
         return render(request, 'users/signup.html')
     email = request.POST.get('email')
@@ -60,11 +72,23 @@ def signup(request):
 
 @login_required(login_url='/')
 def signout(request):
+    """
+    Handle User logout 
+    Method type:GET 
+    """
     auth.logout(request)
     return redirect('login')
 
 @login_required(login_url='/')
 def update(request):
+    """
+      updating the first name and last name of a user and redirecting them to either the mentor or mentee dashboard based on their role
+      Method type:POST
+      Parameters:
+           first_name
+           last_name
+            role
+    """
     first_name = request.POST.get('first_name')
     last_name = request.POST.get('last_name')
     role = request.POST.get('role')

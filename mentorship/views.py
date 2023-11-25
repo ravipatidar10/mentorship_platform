@@ -1,10 +1,13 @@
+# Python Imports
 from datetime import datetime
 
+# 3rd Party Imports
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.db.models import When, Case, Value, CharField
 
+# Local Imports
 from .models import (
     Mentorship, 
     Meeting,
@@ -20,6 +23,12 @@ from mentor.models import ResearchDetails
 
 @login_required(login_url='/')
 def request_mentorship(request):
+    """
+    Request for mentorship to mentor by mentee
+    method type: POST
+    parameters:
+        research_detail_id
+    """
     research_detail_id = request.POST.get('research_detail_id')
     print(research_detail_id)
     research_detail = ResearchDetails.objects.get(id=research_detail_id)
@@ -33,6 +42,12 @@ def request_mentorship(request):
 
 @login_required(login_url='/')
 def pending_requests(request):
+    """
+    Shows pending Requests
+    method type: GET
+    parameters:
+         Request
+    """
     role = "mentor"
     try:
         request.user.mentee
@@ -57,6 +72,12 @@ def pending_requests(request):
 
 @login_required(login_url='/')
 def cancel_request(request):
+    """
+    Handles the mentorship Cancellation Request
+    method types:GET
+    Parameters:
+         request_id
+    """
     request_id = request.POST.get('request_id')
     mentorship_request = Mentorship.objects.get(id=request_id)
     try:
@@ -69,6 +90,13 @@ def cancel_request(request):
 
 @login_required(login_url='/')
 def accept_request(request):
+    """
+    Accepts the mentorship Requests
+    Method type:POST
+    Parameters:
+        request_id
+    
+    """
     request_id = request.POST.get('request_id')
     mentorship_request = Mentorship.objects.get(id=request_id)
     mentorship_request.status = ACCEPTED
@@ -77,6 +105,10 @@ def accept_request(request):
 
 @login_required(login_url='/')
 def get_mentees(request):
+    """
+    retrieve and display data of mentees on mentor side
+    Method type:GET
+    """
     mentorships = Mentorship.objects.filter(mentor=request.user.mentor, status=ACCEPTED)
     return render(
         request,
@@ -89,6 +121,10 @@ def get_mentees(request):
 
 @login_required(login_url='/')
 def get_mentors(request):
+    """
+    retrieve and display data of mentors on mentee side 
+    Method type:GET
+    """
     mentorships = Mentorship.objects.filter(mentee=request.user.mentee, status=ACCEPTED)
     return render(
         request,
@@ -101,6 +137,14 @@ def get_mentors(request):
 
 @login_required(login_url='/')
 def get_mentorships(request):
+    """
+    handle the retrieval of mentorships 
+    Method type:GET
+    Parameters:
+        role
+        status
+    """
+    
     role = request.GET.get('role')
     status = request.GET.get('status', ACCEPTED)
     if role == 'mentee':
@@ -127,6 +171,14 @@ def get_mentorships(request):
     
 @login_required(login_url='/')
 def get_tasks(request):
+    """
+    represent the ID of the mentorship for which tasks are being retrieved 
+    Method type:GET
+    Parameters:
+        mentorship_id
+        role
+        status
+    """
     mentorship_id = request.GET.get('mentorship_id')
     role = request.GET.get('role')
     task_status = request.GET.get("status")
@@ -162,6 +214,13 @@ def get_tasks(request):
 
 @login_required(login_url='/')
 def change_mentorship_status(request):
+    """
+    change the status for a specific mentorship
+    Method type:GET
+    Parameters:
+        mentorship_id 
+        status
+    """ 
     mentorship_id = request.GET.get('mentorship_id')
     status = request.GET.get('status')
     mentorship = Mentorship.objects.get(id=mentorship_id)
@@ -171,6 +230,14 @@ def change_mentorship_status(request):
 
 @login_required(login_url='/')
 def change_task_status(request):
+    """
+    change of status for a specific task
+    Method type:GET
+    Parameters:
+        task_id
+        status
+        role
+    """ 
     task_id = request.GET.get('task_id')
     status = request.GET.get('status')
     role = request.GET.get('role')
@@ -183,6 +250,17 @@ def change_task_status(request):
 
 @login_required(login_url='/')
 def create_task(request):
+    """
+    Create a new task
+    Method type:GET
+    Parameters:
+        role
+        title
+        detail
+        start_date
+        end_date
+        mentorship_id
+    """ 
     role = request.POST.get('role')
     title = request.POST.get('title')
     detail = request.POST.get('detail')
